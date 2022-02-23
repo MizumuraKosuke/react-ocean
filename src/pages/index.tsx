@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     <div>
       <Head>
         <title>React Ocean</title>
-        <meta name="description" content="React Ocean by React Three Fiber" />
+        <meta name="description" content="React Ocean with React Three Fiber" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
@@ -34,6 +34,10 @@ const Home: NextPage = () => {
               pixelRatio,
             }}
           >
+            <mesh>
+              <boxBufferGeometry args={[ 100, 100, 100 ]} />
+              <meshStandardMaterial />
+            </mesh>
             <Camera />
             <Lights />
             <IF cond={!isProd}>
