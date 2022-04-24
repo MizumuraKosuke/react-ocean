@@ -8,6 +8,9 @@ import IF from '../components/if'
 import Lights from '../components/lights'
 import Camera from '../components/camera'
 import Helpers from '../components/helpers'
+import Ocean from '../components/ocean'
+
+import OceanCtx from '../components/ocean/ocean.context'
 
 import { isProd } from '../constants'
 
@@ -29,15 +32,16 @@ const Home: NextPage = () => {
         <div className="w-screen h-screen bg-black">
           <Canvas
             shadows
-            gl={{
-              antialias: true,
-              pixelRatio,
-            }}
+            gl={
+              {
+                antialias: true,
+                pixelRatio,
+              }
+            }
           >
-            <mesh>
-              <boxBufferGeometry args={[ 100, 100, 100 ]} />
-              <meshStandardMaterial />
-            </mesh>
+            <OceanCtx.Provider>
+              <Ocean />
+            </OceanCtx.Provider>
             <Camera />
             <Lights />
             <IF cond={!isProd}>
