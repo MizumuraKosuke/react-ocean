@@ -11,20 +11,22 @@ import {
   LinearFilter,
   RGBAFormat,
   FloatType,
+  DataTexture,
 } from 'three'
 
 import { RESOLUTION } from '../../constants'
+import { phaseArray } from './data-array'
 
 const useOcean = () => {
   const inited = useRef(false)
   const isPing = useRef(true)
 
-  const specMaterialRef = useRef<THREE.RawShaderMaterial | null>(null)
+  const specMaterialRef = useRef<THREE.RawShaderMaterial>()
   const phaseMaterialRef = useRef<THREE.RawShaderMaterial>()
-  const hSubtransMaterialRef = useRef<THREE.RawShaderMaterial | null>(null)
-  const vSubtransMaterialRef = useRef<THREE.RawShaderMaterial | null>(null)
-  const normalMaterialRef = useRef<THREE.RawShaderMaterial | null>(null)
-  const oceanMaterialRef = useRef<THREE.RawShaderMaterial | null>(null)
+  const hSubtransMaterialRef = useRef<THREE.RawShaderMaterial>()
+  const vSubtransMaterialRef = useRef<THREE.RawShaderMaterial>()
+  const normalMaterialRef = useRef<THREE.RawShaderMaterial>()
+  const oceanMaterialRef = useRef<THREE.ShaderMaterial>()
 
   const initialSpecScene = useMemo(() => new Scene(), [])
   const specScene = useMemo(() => new Scene(), [])
@@ -32,7 +34,6 @@ const useOcean = () => {
   const hSubtransScene = useMemo(() => new Scene(), [])
   const vSubtransScene = useMemo(() => new Scene(), [])
   const normalScene = useMemo(() => new Scene(), [])
-  const oceanScene = useMemo(() => new Scene(), [])
 
   const camera = useMemo(() => {
     const c = new OrthographicCamera(
@@ -137,6 +138,7 @@ const useOcean = () => {
 
   useFrame(({ gl, clock }) => {
     if (!inited.current) {
+      pingPhaseRender.current.setTexture(new DataTexture(phaseArray))
       gl.setRenderTarget(initialSpectrumRender?.current)
       gl.render(initialSpecScene, camera)
       gl.setRenderTarget(null)
@@ -204,6 +206,11 @@ const useOcean = () => {
       gl.render(normalScene, camera)
       gl.setRenderTarget(null)
     }
+
+    if (oceanMaterialRef.current) {
+      oceanMaterialRef.current.uniforms.u_displacementMap.value = displacementRender.current.texture
+      oceanMaterialRef.current.uniforms.u_normalMap.value = normalRender.current.texture
+    }
   
     isPing.current = !isPing.current
     inited.current = true
@@ -223,7 +230,6 @@ const useOcean = () => {
     hSubtransScene,
     vSubtransScene,
     normalScene,
-    oceanScene,
     initialSpectrumRender,
     spectrumRender,
     pingPhaseRender,

@@ -11,7 +11,6 @@ uniform vec3 u_cameraPosition;
 uniform vec3 u_oceanColor;
 uniform vec3 u_skyColor;
 uniform float u_exposure;
-
 uniform vec3 u_sunDirection;
 
 vec3 hdr (vec3 color, float exposure) {
