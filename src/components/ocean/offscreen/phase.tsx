@@ -37,7 +37,7 @@ const Phase = () => {
             <bufferGeometry>
               <bufferAttribute
                 attach="index"
-                array={new Uint16Array([ 0, 2, 1, 2, 3, 1 ])}
+                array={new Uint16Array([ 0, 2, 1, 1, 2, 3 ])}
                 itemSize={1}
                 count={6}
               />

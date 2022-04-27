@@ -37,14 +37,14 @@ const useOcean = () => {
 
   const camera = useMemo(() => {
     const c = new OrthographicCamera(
-      RESOLUTION / -2,
-      RESOLUTION / 2,
-      RESOLUTION / 2,
-      RESOLUTION / -2,
+      -1,
       1,
+      1,
+      -1,
+      0,
       1000,
     )
-    c.position.z = 2
+    // c.position.z = 2
     return c
   }, [])
   
@@ -138,7 +138,9 @@ const useOcean = () => {
 
   useFrame(({ gl, clock }) => {
     if (!inited.current) {
-      pingPhaseRender.current.setTexture(new DataTexture(phaseArray))
+      pingPhaseRender.current.setTexture(
+        new DataTexture(phaseArray, RESOLUTION, RESOLUTION, RGBAFormat),
+      )
       gl.setRenderTarget(initialSpectrumRender?.current)
       gl.render(initialSpecScene, camera)
       gl.setRenderTarget(null)

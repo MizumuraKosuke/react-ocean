@@ -66,5 +66,5 @@ void main (void) {
     h = 0.0; //no DC term
   }
 
-  gl_FragColor = vec4(h, 0., 0., 1.);
+  gl_FragColor = vec4(h, 0., 0., 0.);
 }

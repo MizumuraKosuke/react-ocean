@@ -30,7 +30,7 @@ const Ocean = () => {
     oceanMaterialRef,
     displacementRender,
     normalRender,
-    pingPhaseRender,
+    initialSpectrumRender,
   } = OceanCtx.useContainer()
 
   const uniforms = useMemo(() => {
@@ -55,9 +55,9 @@ const Ocean = () => {
       <VerticalSubtransform />
       <Normal />
       <mesh>
-        {/* <planeBufferGeometry args={[ RESOLUTION, RESOLUTION, 2, 2 ]} />
+        {/* <boxGeometry args={[ RESOLUTION, RESOLUTION, RESOLUTION ]} />
         <meshPhongMaterial
-          map={pingPhaseRender.current.texture}
+          map={initialSpectrumRender.current.texture}
         /> */}
         <bufferGeometry>
           <bufferAttribute
@@ -68,16 +68,16 @@ const Ocean = () => {
           />
           <bufferAttribute
             attachObject={[ 'attributes', 'a_position' ]}
-            array={positionBuffer}
+            array={new Float32Array(oceanData)}
             itemSize={3}
-            count={positionBuffer.length / 3}
+            count={oceanData.length / 3}
             normalized={false}
           />
           <bufferAttribute
             attachObject={[ 'attributes', 'a_coordinates' ]}
             array={new Float32Array(oceanData)}
             itemSize={2}
-            count={positionBuffer.length / 2}
+            count={oceanData.length / 2}
             normalized={false}
           />
         </bufferGeometry>
