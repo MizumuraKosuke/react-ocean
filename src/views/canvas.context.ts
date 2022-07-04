@@ -10,26 +10,15 @@ import {
   RGBAFormat,
   HalfFloatType,
   Camera,
-  DataTexture,
   Clock,
 } from 'three'
 import { useFrame } from '@react-three/fiber'
 
 import { RESOLUTION } from '../constants'
 
-const phaseArray = new Uint8Array(RESOLUTION * RESOLUTION * 4)
-for (let i = 0; i < RESOLUTION; i += 1) {
-  for (let j = 0; j < RESOLUTION; j += 1) {
-    phaseArray[i * RESOLUTION * 4 + j * 4] = Math.random() * 2.0 * Math.PI
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 1] = 0
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 2] = 0
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 3] = 0
-  }
-}
-
 const CanvasCtx = createContainer(() => {
   const inited = useRef(false)
-  const isPing = useRef(true)
+  const isPing = useRef(false)
   const clock = useRef(new Clock())
 
   const spectrumMaterial = useRef<THREE.RawShaderMaterial>(null)
@@ -162,21 +151,15 @@ const CanvasCtx = createContainer(() => {
       return
     }
 
-    isPing.current = !isPing.current
-
     if (!inited.current) {
       gl.setRenderTarget(initialSpectrumTarget)
       gl.render(initialSpectrumScene, initialSpectrumCamera)
       gl.setRenderTarget(null)
-      const tex = new DataTexture(phaseArray, RESOLUTION, RESOLUTION, RGBAFormat)
-      tex.needsUpdate = true
-      phaseMaterial.current.uniforms.u_phases.value = tex
     }
-    else {
-      phaseMaterial.current.uniforms.u_phases.value = isPing.current
-        ? pongPhaseTarget.texture
-        : pingPhaseTarget.texture
-    }
+  
+    phaseMaterial.current.uniforms.u_phases.value = isPing.current
+      ? pongPhaseTarget.texture
+      : pingPhaseTarget.texture
     phaseMaterial.current.uniforms.u_deltaTime.value = clock.current.getDelta()
     gl.setRenderTarget(isPing.current ? pingPhaseTarget : pongPhaseTarget)
     gl.render(phaseScene, phaseCamera)
@@ -237,6 +220,7 @@ const CanvasCtx = createContainer(() => {
     oceanMaterial.current.uniforms.u_cameraPosition.value = camera.position
 
     inited.current = true
+    isPing.current = !isPing.current
   })
 
   return {
