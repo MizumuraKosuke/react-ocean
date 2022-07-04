@@ -1,6 +1,6 @@
 # \[WIP\]React Ocean with React Three Fiber
 
-[Live demo](https://react-ocean-kosuke.vercel.app)
+[Live demo](https://react-ocean.vercel.app)
 
 ## Getting Started
 
