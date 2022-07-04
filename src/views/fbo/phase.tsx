@@ -17,7 +17,7 @@ import { useMemo } from 'react'
 const phaseArray = new Float32Array(RESOLUTION * RESOLUTION * 4)
 for (let i = 0; i < RESOLUTION; i += 1) {
   for (let j = 0; j < RESOLUTION; j += 1) {
-    phaseArray[i * RESOLUTION * 4 + j * 4] = Math.random() * 2.0 * Math.PI +2000
+    phaseArray[i * RESOLUTION * 4 + j * 4] = Math.random() * 2.0 * Math.PI
     phaseArray[i * RESOLUTION * 4 + j * 4 + 1] = 0
     phaseArray[i * RESOLUTION * 4 + j * 4 + 2] = 0
     phaseArray[i * RESOLUTION * 4 + j * 4 + 3] = 0
@@ -47,7 +47,7 @@ const PhaseFbo = () => {
       {
         createPortal(
           (
-            <mesh position={[ 0, 0, 0 ]} scale={1}>
+            <mesh>
               <bufferGeometry>
                 <bufferAttribute
                   attach="index"

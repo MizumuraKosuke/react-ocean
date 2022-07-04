@@ -15,5 +15,5 @@ void main (void) {
   v_position = pos;
   v_coordinates = coordinates;
 
-  gl_Position = projectionMatrix * viewMatrix * vec4(pos, 1.0);
+  gl_Position = projectionMatrix * viewMatrix * vec4(pos, 1.);
 }

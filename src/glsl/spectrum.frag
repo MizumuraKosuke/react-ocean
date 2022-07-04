@@ -23,21 +23,21 @@ vec2 multiplyByI (vec2 z) {
 }
 
 float omega (float k) {
-  return sqrt(G * k * (1.0 + k * k / KM * KM));
+  return sqrt(G * k * (1. + k * k / KM * KM));
 }
 
 void main (void) {
-  vec2 coordinates = gl_FragCoord.xy - 0.5;
-  float n = (coordinates.x < u_resolution * 0.5) ? coordinates.x : coordinates.x - u_resolution;
-  float m = (coordinates.y < u_resolution * 0.5) ? coordinates.y : coordinates.y - u_resolution;
-  vec2 waveVector = (2.0 * PI * vec2(n, m)) / u_size;
+  vec2 coordinates = gl_FragCoord.xy - .5;
+  float n = (coordinates.x < u_resolution * .5) ? coordinates.x : coordinates.x - u_resolution;
+  float m = (coordinates.y < u_resolution * .5) ? coordinates.y : coordinates.y - u_resolution;
+  vec2 waveVector = (2. * PI * vec2(n, m)) / u_size;
 
   float phase = texture2D(u_phases, v_coordinates).r;
   vec2 phaseVector = vec2(cos(phase), sin(phase));
 
   vec2 h0 = texture2D(u_initialSpectrum, v_coordinates).rg;
-  vec2 h0Star = texture2D(u_initialSpectrum, vec2(1.0 - v_coordinates + 1.0 / u_resolution)).rg;
-  h0Star.y *= -1.0;
+  vec2 h0Star = texture2D(u_initialSpectrum, vec2(1. - v_coordinates + 1. / u_resolution)).rg;
+  h0Star.y *= -1.;
 
   vec2 h = multiplyComplex(h0, phaseVector) + multiplyComplex(h0Star, vec2(phaseVector.x, -phaseVector.y));
 
@@ -45,10 +45,10 @@ void main (void) {
   vec2 hZ = -multiplyByI(h * (waveVector.y / length(waveVector))) * u_choppiness;
 
   //no DC term
-  if (waveVector.x == 0.0 && waveVector.y == 0.0) {
-    h = vec2(0.0);
-    hX = vec2(0.0);
-    hZ = vec2(0.0);
+  if (waveVector.x == 0. && waveVector.y == 0.) {
+    h = vec2(0.);
+    hX = vec2(0.);
+    hZ = vec2(0.);
   }
 
   gl_FragColor = vec4(hX + multiplyByI(h), hZ);

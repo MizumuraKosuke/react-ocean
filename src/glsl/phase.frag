@@ -12,19 +12,21 @@ uniform float u_deltaTime;
 uniform float u_resolution;
 uniform float u_size;
 
+float speed = 1.;
+
 float omega (float k) {
-  return sqrt(G * k * (1.0 + k * k / KM * KM));
+  return sqrt(G * k * (1. + k * k / KM * KM));
 }
 
 void main (void) {
-  vec2 coordinates = gl_FragCoord.xy - 0.5;
-  float n = (coordinates.x < u_resolution * 0.5) ? coordinates.x : coordinates.x - u_resolution;
-  float m = (coordinates.y < u_resolution * 0.5) ? coordinates.y : coordinates.y - u_resolution;
-  vec2 waveVector = (2.0 * PI * vec2(n, m)) / u_size;
+  vec2 coordinates = gl_FragCoord.xy - .5;
+  float n = (coordinates.x < u_resolution * .5) ? coordinates.x : coordinates.x - u_resolution;
+  float m = (coordinates.y < u_resolution * .5) ? coordinates.y : coordinates.y - u_resolution;
+  vec2 waveVector = (2. * PI * vec2(n, m)) / u_size;
 
   float phase = texture2D(u_phases, v_coordinates).r;
-  float deltaPhase = omega(length(waveVector)) * u_deltaTime;
-  phase = mod(phase + deltaPhase, 2.0 * PI);
+  float deltaPhase = omega(length(waveVector)) * u_deltaTime * speed;
+  phase = mod(phase + deltaPhase, 2. * PI);
 
-  gl_FragColor = vec4(phase, 0.0, 0.0, 0.0);
+  gl_FragColor = vec4(phase, 0., 0., 0.);
 }

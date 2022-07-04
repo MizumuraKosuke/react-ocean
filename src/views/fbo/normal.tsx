@@ -25,7 +25,7 @@ const NormalFbo = () => {
       {
         createPortal(
           (
-            <mesh position={[ 0, 0, 0 ]} scale={1}>
+            <mesh>
               <bufferGeometry>
                 <bufferAttribute
                   attach="index"

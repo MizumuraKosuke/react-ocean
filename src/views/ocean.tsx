@@ -16,8 +16,8 @@ import { debugMode, INITIAL_SIZE } from '../constants'
 import vert from '../glsl/ocean.vert'
 import frag from '../glsl/ocean.frag'
 
-const GEOMETRY_RESOLUTION = 256
-const GEOMETRY_SIZE = 80
+const GEOMETRY_RESOLUTION = 256 / 2
+const GEOMETRY_SIZE = 80 * 2
 
 const positionData = []
 const coordinateData = []
@@ -92,7 +92,7 @@ const Ocean = () => {
               u_normalMap: new Uniform(normalTarget.texture),
               u_oceanColor: new Uniform([ 0.004, 0.016, 0.047 ]),
               u_skyColor: new Uniform([ 3.2, 9.6, 12.8 ]),
-              u_sunDirection: new Uniform([ -1.0, 1.0, 1.0 ]),
+              u_sunDirection: new Uniform([ -1, 1, 1 ]),
               u_exposure: new Uniform(0.35),
               u_cameraPosition: new Uniform([ 0, 0, 0 ]),
             }

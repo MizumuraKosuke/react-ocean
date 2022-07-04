@@ -19,11 +19,11 @@ void main (void) {
   vec3 normal = texture2D(u_normalMap, v_coordinates).rgb;
 
   vec3 view = normalize(u_cameraPosition - v_position);
-  float fresnel = 0.02 + 0.98 * pow(1.0 - dot(normal, view), 5.0);
+  float fresnel = 0.02 + 0.98 * pow(1.0 - dot(normal, view), 5.);
   vec3 sky = fresnel * u_skyColor;
 
-  float diffuse = clamp(dot(normal, normalize(u_sunDirection)), 0.0, 1.0);
-  vec3 water = (1.0 - fresnel) * u_oceanColor * u_skyColor * diffuse;
+  float diffuse = clamp(dot(normal, normalize(u_sunDirection)), 0., 1.);
+  vec3 water = (1. - fresnel) * u_oceanColor * u_skyColor * diffuse;
 
   vec3 color = sky + water;
 
