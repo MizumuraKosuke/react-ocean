@@ -156,7 +156,7 @@ const CanvasCtx = createContainer(() => {
       gl.render(initialSpectrumScene, initialSpectrumCamera)
       gl.setRenderTarget(null)
     }
-  
+ 
     phaseMaterial.current.uniforms.u_phases.value = isPing.current
       ? pongPhaseTarget.texture
       : pingPhaseTarget.texture
