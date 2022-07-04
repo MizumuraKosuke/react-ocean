@@ -17,6 +17,7 @@ float omega (float k) {
 }
 
 void main (void) {
+  float deltaTime = 1.0 / 60.0;
   vec2 coordinates = gl_FragCoord.xy - 0.5;
   float n = (coordinates.x < u_resolution * 0.5) ? coordinates.x : coordinates.x - u_resolution;
   float m = (coordinates.y < u_resolution * 0.5) ? coordinates.y : coordinates.y - u_resolution;

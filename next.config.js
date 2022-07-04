@@ -3,10 +3,9 @@ module.exports = {
   reactStrictMode: true,
   webpack: (conf) => {
     conf.module.rules.push({
-      test: /\.(glsl|frag|vert)$/,
+      test: /\.(glsl|fs|vs|frag|vert)$/,
       exclude: /node_modules/,
       use: [
-        'glslify-import-loader',
         'raw-loader',
         'glslify-loader',
       ],

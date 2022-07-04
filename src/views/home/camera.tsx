@@ -12,8 +12,8 @@ type CameraParamsType = {
 export const CameraParams: CameraParamsType = {
   fov: 60,
   near: 0.1,
-  far: 3000,
-  position: new Vector3(0, 50, 600),
+  far: 5000,
+  position: new Vector3(0, 2, 10),
 }
 
 const Camera = () => {

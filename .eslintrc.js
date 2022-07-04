@@ -5,6 +5,8 @@ module.exports = {
     'node': true,
   },
   'extends': [
+    'next',
+    'next/core-web-vitals',
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
@@ -28,6 +30,8 @@ module.exports = {
     },
   },
   'rules': {
+    'react/no-unescaped-entities': 'off',
+    '@next/next/no-page-custom-font': 'off',
     'comma-dangle': [ 'error', 'always-multiline' ],
     'arrow-parens': [ 'warn', 'always' ],
     'brace-style': [ 'warn', 'stroustrup', { 'allowSingleLine': true }],
@@ -63,8 +67,7 @@ module.exports = {
     'react/jsx-indent-props': [ 2, 2 ],
     'react/jsx-closing-bracket-location': [ 1, 'tag-aligned' ],
     'jsx-a11y/anchor-is-valid': [ 'off' ],
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': [ 'error' ],
+    'no-unused-vars': [ 'off' ],
     'react/jsx-props-no-spreading': [ 'off' ],
     'react/jsx-curly-newline': [ 'warn', { multiline: 'require', singleline: 'consistent' }],
     'react/jsx-one-expression-per-line': 'off',

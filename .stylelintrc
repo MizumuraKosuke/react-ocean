@@ -24,7 +24,6 @@
     "declaration-block-semicolon-newline-after": "always-multi-line",
     "declaration-block-semicolon-newline-before": "never-multi-line",
     "declaration-block-semicolon-space-after": "always-single-line",
-    "declaration-block-trailing-semicolon": null,
     "declaration-empty-line-before": null,
     "declaration-no-important": true,
     "font-family-name-quotes": "always-where-recommended",
@@ -45,7 +44,7 @@
     "no-duplicate-selectors": true,
     "number-leading-zero": "never",
     "media-feature-name-no-unknown": [true, {
-      "ignoreMediaFeatureNames": ["prefers-reduced-motion", "min-device-pixel-ratio"]
+      "ignoreMediaFeatureNames": ["prefers-reduced-motion"]
     }],
     "order/properties-order": [
       "position",
@@ -261,15 +260,6 @@
     "property-no-vendor-prefix": true,
     "rule-empty-line-before": null,
     "scss/dollar-variable-default": [true, { "ignore": "local" }],
-    "scss/at-rule-no-unknown": [ true, {
-      "ignoreAtRules": [
-        "tailwind",
-        "apply",
-        "variants",
-        "responsive",
-        "screen"
-      ]
-    }],
     "selector-attribute-quotes": "always",
     "selector-list-comma-newline-after": "always",
     "selector-list-comma-newline-before": "never-multi-line",
@@ -284,7 +274,7 @@
     "selector-max-specificity": null,
     "selector-max-type": 2,
     "selector-max-universal": 1,
-    "selector-no-qualifying-type": [ true, { "ignore": ["attribute", "class"] } ],
+    "selector-no-qualifying-type": true,
     "selector-no-vendor-prefix": true,
     "selector-pseudo-class-no-unknown": [true, {
       "ignorePseudoClasses": ["global"]

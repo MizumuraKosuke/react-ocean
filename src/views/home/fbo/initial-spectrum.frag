@@ -17,10 +17,6 @@ float omega (float k) {
   return sqrt(G * k * (1.0 + square(k / KM)));
 }
 
-float tanh (float x) {
-  return (1.0 - exp(-2.0 * x)) / (1.0 + exp(-2.0 * x));
-}
-
 void main (void) {
   vec2 coordinates = gl_FragCoord.xy - 0.5;
   float n = (coordinates.x < u_resolution * 0.5) ? coordinates.x : coordinates.x - u_resolution;

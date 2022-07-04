@@ -3,9 +3,7 @@ precision highp float;
 varying vec2 v_coordinates;
 varying vec3 v_position;
 
-uniform sampler2D u_displacementMap;
 uniform sampler2D u_normalMap;
-
 uniform vec3 u_cameraPosition;
 
 uniform vec3 u_oceanColor;
