@@ -13,7 +13,7 @@ import { debugMode } from '../constants'
 const Home: NextPage = () => (
   <>
     <Head>
-      <title>FFT Ocean by React Three Fiber</title>
+      <title>FFT Ocean with React Three Fiber</title>
       <meta name="description" content="FFT Ocean by React Three Fiber" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
