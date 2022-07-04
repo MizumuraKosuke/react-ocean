@@ -9,13 +9,13 @@ import {
   LinearFilter,
   RGBAFormat,
   HalfFloatType,
-  OrthographicCamera,
+  Camera,
   DataTexture,
   Clock,
 } from 'three'
 import { useFrame } from '@react-three/fiber'
 
-import { RESOLUTION } from './canvas.constants'
+import { RESOLUTION } from '../constants'
 
 const phaseArray = new Uint8Array(RESOLUTION * RESOLUTION * 4)
 for (let i = 0; i < RESOLUTION; i += 1) {
@@ -39,12 +39,12 @@ const CanvasCtx = createContainer(() => {
   const normalMaterial = useRef<THREE.RawShaderMaterial>(null)
   const oceanMaterial = useRef<THREE.RawShaderMaterial>(null)
 
-  const initialSpectrumCamera = useRef<OrthographicCamera>(null)
-  const spectrumCamera = useRef<OrthographicCamera>(null)
-  const phaseCamera = useRef<OrthographicCamera>(null)
-  const hSubtransCamera = useRef<OrthographicCamera>(null)
-  const vSubtransCamera = useRef<OrthographicCamera>(null)
-  const normalCamera = useRef<OrthographicCamera>(null)
+  const initialSpectrumCamera = useMemo(() => new Camera(), [])
+  const spectrumCamera = useMemo(() => new Camera(), [])
+  const phaseCamera = useMemo(() => new Camera(), [])
+  const hSubtransCamera = useMemo(() => new Camera(), [])
+  const vSubtransCamera = useMemo(() => new Camera(), [])
+  const normalCamera = useMemo(() => new Camera(), [])
 
   const initialSpectrumScene = useMemo(() => new Scene(), [])
   const spectrumScene = useMemo(() => new Scene(), [])
@@ -54,8 +54,7 @@ const CanvasCtx = createContainer(() => {
   const normalScene = useMemo(() => new Scene(), [])
 
   const initialSpectrumTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: RepeatWrapping,
       wrapT: RepeatWrapping,
@@ -67,8 +66,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const spectrumTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -80,8 +78,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const pingPhaseTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -93,8 +90,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const pongPhaseTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -106,8 +102,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const pingTransTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -119,8 +114,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const pongTransTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -132,8 +126,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const displacementTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -145,8 +138,7 @@ const CanvasCtx = createContainer(() => {
   ), [])
 
   const normalTarget = useMemo(() => new WebGLRenderTarget(
-    RESOLUTION,
-    RESOLUTION,
+    RESOLUTION, RESOLUTION,
     {
       wrapS: ClampToEdgeWrapping,
       wrapT: ClampToEdgeWrapping,
@@ -160,17 +152,11 @@ const CanvasCtx = createContainer(() => {
 
   useFrame(({ gl, camera }) => {
     if (
-      !initialSpectrumCamera.current
-      || !phaseMaterial.current
-      || !phaseCamera.current
+      !phaseMaterial.current
       || !spectrumMaterial.current
-      || !spectrumCamera.current
       || !hSubtransMaterial.current
       || !vSubtransMaterial.current
-      || !hSubtransCamera.current
-      || !vSubtransCamera.current
       || !normalMaterial.current
-      || !normalCamera.current
       || !oceanMaterial.current
     ) {
       return
@@ -180,7 +166,7 @@ const CanvasCtx = createContainer(() => {
 
     if (!inited.current) {
       gl.setRenderTarget(initialSpectrumTarget)
-      gl.render(initialSpectrumScene, initialSpectrumCamera.current)
+      gl.render(initialSpectrumScene, initialSpectrumCamera)
       gl.setRenderTarget(null)
       const tex = new DataTexture(phaseArray, RESOLUTION, RESOLUTION, RGBAFormat)
       tex.needsUpdate = true
@@ -193,7 +179,7 @@ const CanvasCtx = createContainer(() => {
     }
     phaseMaterial.current.uniforms.u_deltaTime.value = clock.current.getDelta()
     gl.setRenderTarget(isPing.current ? pingPhaseTarget : pongPhaseTarget)
-    gl.render(phaseScene, phaseCamera.current)
+    gl.render(phaseScene, phaseCamera)
     gl.setRenderTarget(null)
 
     spectrumMaterial.current.uniforms.u_initialSpectrum.value = initialSpectrumTarget.texture
@@ -201,7 +187,7 @@ const CanvasCtx = createContainer(() => {
       ? pingPhaseTarget.texture
       : pongPhaseTarget.texture
     gl.setRenderTarget(spectrumTarget)
-    gl.render(spectrumScene, spectrumCamera.current)
+    gl.render(spectrumScene, spectrumCamera)
     gl.setRenderTarget(null)
 
     const iterations = Math.log2(RESOLUTION) * 2
@@ -236,14 +222,14 @@ const CanvasCtx = createContainer(() => {
 
       gl.render(
         isHorizontal ? hSubtransScene : vSubtransScene,
-        isHorizontal ? hSubtransCamera.current : vSubtransCamera.current,
+        isHorizontal ? hSubtransCamera : vSubtransCamera,
       )
       gl.setRenderTarget(null)
     }
 
     normalMaterial.current.uniforms.u_displacementMap.value = displacementTarget.texture
     gl.setRenderTarget(normalTarget)
-    gl.render(normalScene, normalCamera.current)
+    gl.render(normalScene, normalCamera)
     gl.setRenderTarget(null)
 
     oceanMaterial.current.uniforms.u_displacementMap.value = displacementTarget.texture
@@ -260,12 +246,6 @@ const CanvasCtx = createContainer(() => {
     vSubtransMaterial,
     normalMaterial,
     oceanMaterial,
-    initialSpectrumCamera,
-    spectrumCamera,
-    phaseCamera,
-    hSubtransCamera,
-    vSubtransCamera,
-    normalCamera,
     initialSpectrumScene,
     spectrumScene,
     phaseScene,

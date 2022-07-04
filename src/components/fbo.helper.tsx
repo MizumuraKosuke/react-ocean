@@ -1,5 +1,5 @@
-import { MeshProps } from '@react-three/fiber'
 import { Texture } from 'three'
+import { MeshProps } from '@react-three/fiber'
 
 type Props = MeshProps & {
   texture: Texture

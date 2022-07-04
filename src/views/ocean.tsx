@@ -1,28 +1,32 @@
 import { Uniform } from 'three'
 import glslify from 'glslify'
 
+import InitialSpectrum from './fbo/initial-spectrum'
+import Phase from './fbo/phase'
+import Spectrum from './fbo/spectrum'
+import HorizontalSubtransform from './fbo/horizontal-subtransform'
+import VerticalSubtransform from './fbo/vertical-subtransform'
+import Normal from './fbo/normal'
+import FboHelpers from './fbo/helpers'
+
 import CanvasCtx from './canvas.context'
-import {
-  INITIAL_SIZE,
-} from './canvas.constants'
 
-import Fbo from './fbo'
+import { debugMode, INITIAL_SIZE } from '../constants'
 
-import vert from './ocean.vert'
-import frag from './ocean.frag'
+import vert from '../glsl/ocean.vert'
+import frag from '../glsl/ocean.frag'
 
 const GEOMETRY_RESOLUTION = 256
-const GEOMETRY_SIZE = 60
-const GEOMETRY_ORIGIN = [ -GEOMETRY_SIZE / 2, -GEOMETRY_SIZE / 2 ]
+const GEOMETRY_SIZE = 80
 
 const positionData = []
 const coordinateData = []
 const indexData = []
 for (let zIndex = 0; zIndex < GEOMETRY_RESOLUTION; zIndex += 1) {
   for (let xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
-    positionData.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[0])
+    positionData.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) - GEOMETRY_SIZE / 2)
     positionData.push((0.0))
-    positionData.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[1])
+    positionData.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) - GEOMETRY_SIZE / 2)
     
     coordinateData.push(xIndex / (GEOMETRY_RESOLUTION - 1))
     coordinateData.push(zIndex / (GEOMETRY_RESOLUTION - 1))
@@ -57,7 +61,6 @@ const Ocean = () => {
 
   return (
     <>
-      <Fbo />
       <mesh>
         <bufferGeometry>
           <bufferAttribute
@@ -99,6 +102,15 @@ const Ocean = () => {
           // wireframe
         />
       </mesh>
+      <InitialSpectrum />
+      <Spectrum />
+      <Phase />
+      <HorizontalSubtransform />
+      <VerticalSubtransform />
+      <Normal />
+      {
+        debugMode && <FboHelpers />
+      }
     </>
   )
 }

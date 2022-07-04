@@ -2,7 +2,6 @@ export const debugMode = true
 
 export const RESOLUTION = 512
 export const INITIAL_SIZE = 200 // 250
-export const INITIAL_WIND = [ 10.0, 10.0 ]
 export const INITIAL_CHOPPINESS = 1.5
 
 export const indexBuffer = new Uint16Array([
