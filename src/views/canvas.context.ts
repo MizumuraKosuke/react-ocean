@@ -9,6 +9,7 @@ import {
   LinearFilter,
   RGBAFormat,
   FloatType,
+  HalfFloatType,
   Camera,
   Clock,
   DataTexture,
@@ -72,7 +73,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -84,7 +85,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -96,7 +97,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -108,7 +109,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -120,7 +121,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -132,7 +133,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -144,7 +145,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: LinearFilter,
       magFilter: LinearFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
@@ -156,7 +157,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: LinearFilter,
       magFilter: LinearFilter,
       format: RGBAFormat,
-      type: FloatType,
+      type: HalfFloatType,
     },
   ), [])
 
