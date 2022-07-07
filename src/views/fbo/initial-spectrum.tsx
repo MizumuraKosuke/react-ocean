@@ -1,7 +1,4 @@
-import {
-  Uniform,
-  Vector2,
-} from 'three'
+import { Uniform, Vector2 } from 'three'
 import { createPortal } from '@react-three/fiber'
 import glslify from 'glslify'
 
@@ -13,7 +10,6 @@ import frag from '../../glsl/initial-spectrum.frag'
 
 const InitialSpectrumFbo = () => {
   const { initialSpectrumScene } = CanvasCtx.useContainer()
-
   return (
     <>
       {

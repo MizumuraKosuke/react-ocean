@@ -9,13 +9,7 @@ import vert from '../../glsl/fullscreen.vert'
 import frag from '../../glsl/spectrum.frag'
 
 const SpectrumFbo = () => {
-  const {
-    spectrumMaterial,
-    initialSpectrumTarget,
-    pingPhaseTarget,
-    spectrumScene,
-  } = CanvasCtx.useContainer()
-
+  const { spectrumMaterial, spectrumScene } = CanvasCtx.useContainer()
   return (
     <>
       {
@@ -42,8 +36,8 @@ const SpectrumFbo = () => {
                   {
                     u_resolution: new Uniform(RESOLUTION),
                     u_size: new Uniform(INITIAL_SIZE),
-                    u_initialSpectrum: new Uniform(initialSpectrumTarget.texture),
-                    u_phases: new Uniform(pingPhaseTarget.texture),
+                    u_initialSpectrum: new Uniform(null),
+                    u_phases: new Uniform(null),
                     u_choppiness: new Uniform(INITIAL_CHOPPINESS),
                   }
                 }

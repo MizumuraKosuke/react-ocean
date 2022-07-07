@@ -14,12 +14,7 @@ import vert from '../../glsl/fullscreen.vert'
 import frag from '../../glsl/normal.frag'
 
 const NormalFbo = () => {
-  const {
-    normalMaterial,
-    normalScene,
-    displacementTarget,
-  } = CanvasCtx.useContainer()
-
+  const { normalMaterial, normalScene } = CanvasCtx.useContainer()
   return (
     <>
       {
@@ -46,7 +41,7 @@ const NormalFbo = () => {
                   {
                     u_resolution: new Uniform(RESOLUTION),
                     u_size: new Uniform(INITIAL_SIZE),
-                    u_displacementMap: new Uniform(displacementTarget.texture),
+                    u_displacementMap: new Uniform(null),
                   }
                 }
                 vertexShader={glslify(vert)}

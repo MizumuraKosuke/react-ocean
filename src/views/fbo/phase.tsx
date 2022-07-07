@@ -1,4 +1,4 @@
-import { Uniform, DataTexture, RGBAFormat, NearestFilter } from 'three'
+import { Uniform } from 'three'
 import { createPortal } from '@react-three/fiber'
 import glslify from 'glslify'
 
@@ -12,36 +12,9 @@ import {
 
 import vert from '../../glsl/fullscreen.vert'
 import frag from '../../glsl/phase.frag'
-import { useMemo } from 'react'
-
-const phaseArray = new Float32Array(RESOLUTION * RESOLUTION * 4)
-for (let i = 0; i < RESOLUTION; i += 1) {
-  for (let j = 0; j < RESOLUTION; j += 1) {
-    phaseArray[i * RESOLUTION * 4 + j * 4] = Math.random() * 2.0 * Math.PI
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 1] = 0
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 2] = 0
-    phaseArray[i * RESOLUTION * 4 + j * 4 + 3] = 0
-  }
-}
 
 const PhaseFbo = () => {
-  const {
-    phaseMaterial,
-    phaseScene,
-  } = CanvasCtx.useContainer()
-
-  const uniforms = useMemo(() => {
-    const texture = new DataTexture(phaseArray, RESOLUTION, RESOLUTION, RGBAFormat)
-    texture.minFilter = NearestFilter
-    texture.magFilter = NearestFilter
-    return {
-      u_resolution: new Uniform(RESOLUTION),
-      u_size: new Uniform(INITIAL_SIZE),
-      u_deltaTime: new Uniform(0),
-      u_phases: new Uniform(texture),
-    }
-  }, [])
-
+  const { phaseMaterial, phaseScene } = CanvasCtx.useContainer()
   return (
     <>
       {
@@ -64,7 +37,14 @@ const PhaseFbo = () => {
               </bufferGeometry>
               <shaderMaterial
                 ref={phaseMaterial}
-                uniforms={uniforms}
+                uniforms={
+                  {
+                    u_resolution: new Uniform(RESOLUTION),
+                    u_size: new Uniform(INITIAL_SIZE),
+                    u_deltaTime: new Uniform(0),
+                    u_phases: new Uniform(null),
+                  }
+                }
                 vertexShader={glslify(vert)}
                 fragmentShader={glslify(frag)}
               />

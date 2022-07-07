@@ -4,8 +4,7 @@ import glslify from 'glslify'
 import InitialSpectrum from './fbo/initial-spectrum'
 import Phase from './fbo/phase'
 import Spectrum from './fbo/spectrum'
-import HorizontalSubtransform from './fbo/horizontal-subtransform'
-import VerticalSubtransform from './fbo/vertical-subtransform'
+import Subtransform from './fbo/subtransform'
 import Normal from './fbo/normal'
 import FboHelpers from './fbo/helpers'
 
@@ -105,8 +104,8 @@ const Ocean = () => {
       <InitialSpectrum />
       <Spectrum />
       <Phase />
-      <HorizontalSubtransform />
-      <VerticalSubtransform />
+      <Subtransform isHorizontal />
+      <Subtransform />
       <Normal />
       {
         debugMode && <FboHelpers />

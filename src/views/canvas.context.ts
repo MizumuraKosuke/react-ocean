@@ -8,18 +8,40 @@ import {
   NearestFilter,
   LinearFilter,
   RGBAFormat,
-  HalfFloatType,
+  FloatType,
   Camera,
   Clock,
+  DataTexture,
 } from 'three'
 import { useFrame } from '@react-three/fiber'
 
 import { RESOLUTION } from '../constants'
 
+const phaseArray = new Float32Array(RESOLUTION * RESOLUTION * 4)
+for (let i = 0; i < RESOLUTION; i += 1) {
+  for (let j = 0; j < RESOLUTION; j += 1) {
+    phaseArray[i * RESOLUTION * 4 + j * 4] = Math.random() * 2 * Math.PI
+  }
+}
+
 const CanvasCtx = createContainer(() => {
   const inited = useRef(false)
   const isPing = useRef(false)
   const clock = useRef(new Clock())
+
+  const texture = useMemo(() => {
+    const dataTex = new DataTexture(
+      phaseArray,
+      RESOLUTION,
+      RESOLUTION,
+      RGBAFormat,
+      FloatType,
+    )
+    dataTex.magFilter = NearestFilter
+    dataTex.minFilter = NearestFilter
+    dataTex.needsUpdate = true
+    return dataTex
+  }, [])
 
   const spectrumMaterial = useRef<THREE.RawShaderMaterial>(null)
   const phaseMaterial = useRef<THREE.RawShaderMaterial>(null)
@@ -50,7 +72,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -62,7 +84,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -74,7 +96,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -86,7 +108,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -98,7 +120,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -110,7 +132,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: NearestFilter,
       magFilter: NearestFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -122,7 +144,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: LinearFilter,
       magFilter: LinearFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -134,7 +156,7 @@ const CanvasCtx = createContainer(() => {
       minFilter: LinearFilter,
       magFilter: LinearFilter,
       format: RGBAFormat,
-      type: HalfFloatType,
+      type: FloatType,
     },
   ), [])
 
@@ -156,24 +178,24 @@ const CanvasCtx = createContainer(() => {
       gl.render(initialSpectrumScene, initialSpectrumCamera)
       gl.setRenderTarget(null)
 
-      gl.setRenderTarget(pingPhaseTarget)
-      gl.render(phaseScene, phaseCamera)
-      gl.setRenderTarget(null)
+      phaseMaterial.current.uniforms.u_phases.value = texture
+      texture.dispose()
+    
+      spectrumMaterial.current.uniforms.u_initialSpectrum.value = initialSpectrumTarget.texture
 
-      gl.setRenderTarget(pongPhaseTarget)
-      gl.render(phaseScene, phaseCamera)
-      gl.setRenderTarget(null)
+      inited.current = true
     }
- 
-    phaseMaterial.current.uniforms.u_phases.value = isPing.current
-      ? pongPhaseTarget.texture
-      : pingPhaseTarget.texture
+    else {
+      phaseMaterial.current.uniforms.u_phases.value = isPing.current
+        ? pongPhaseTarget.texture
+        : pingPhaseTarget.texture
+    }
+
     phaseMaterial.current.uniforms.u_deltaTime.value = clock.current.getDelta()
     gl.setRenderTarget(isPing.current ? pingPhaseTarget : pongPhaseTarget)
     gl.render(phaseScene, phaseCamera)
     gl.setRenderTarget(null)
 
-    spectrumMaterial.current.uniforms.u_initialSpectrum.value = initialSpectrumTarget.texture
     spectrumMaterial.current.uniforms.u_phases.value = isPing.current
       ? pingPhaseTarget.texture
       : pongPhaseTarget.texture
@@ -227,7 +249,6 @@ const CanvasCtx = createContainer(() => {
     oceanMaterial.current.uniforms.u_normalMap.value = normalTarget.texture
     oceanMaterial.current.uniforms.u_cameraPosition.value = camera.position
 
-    inited.current = true
     isPing.current = !isPing.current
   })
 

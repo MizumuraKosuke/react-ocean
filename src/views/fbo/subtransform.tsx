@@ -12,13 +12,17 @@ import {
 import vert from '../../glsl/fullscreen.vert'
 import frag from '../../glsl/stockham-fft.frag'
 
-const VerticalSubtransformFbo = () => {
+type Props = {
+  isHorizontal?: boolean
+}
+
+const HorizontalSubtransformFbo = ({ isHorizontal = false }: Props) => {
   const {
+    hSubtransMaterial,
+    hSubtransScene,
     vSubtransMaterial,
     vSubtransScene,
-    spectrumTarget,
   } = CanvasCtx.useContainer()
-
   return (
     <>
       {
@@ -40,24 +44,24 @@ const VerticalSubtransformFbo = () => {
                 />
               </bufferGeometry>
               <shaderMaterial
-                ref={vSubtransMaterial}
+                ref={isHorizontal ? hSubtransMaterial : vSubtransMaterial}
                 uniforms={
                   {
                     u_transformSize: new Uniform(RESOLUTION),
                     u_subtransformSize: new Uniform(0),
-                    u_input: new Uniform(spectrumTarget.texture),
+                    u_input: new Uniform(null),
                   }
                 }
                 vertexShader={glslify(vert)}
-                fragmentShader={glslify(frag)}
+                fragmentShader={`${isHorizontal ? '#define HORIZONTAL \n' : ''}${glslify(frag)}`}
               />
             </mesh>
           ),
-          vSubtransScene,
+          isHorizontal ? hSubtransScene : vSubtransScene,
         )
       }
     </>
   )
 }
 
-export default VerticalSubtransformFbo
+export default HorizontalSubtransformFbo
