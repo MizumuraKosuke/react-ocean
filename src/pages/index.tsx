@@ -17,7 +17,7 @@ const Home: NextPage = () => (
       <meta name="description" content="FFT Ocean by React Three Fiber" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <main className="w-screen h-screen">
+    <main className="w-screen h-screen bg-blue-sky">
       <Canvas>
         <CanvasCtx.Provider>
           <Lights />

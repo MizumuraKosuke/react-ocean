@@ -10,13 +10,15 @@ import FboHelpers from './fbo/helpers'
 
 import CanvasCtx from './canvas.context'
 
-import { debugMode, INITIAL_SIZE } from '../constants'
+import {
+  debugMode,
+  INITIAL_SIZE,
+  GEOMETRY_RESOLUTION,
+  GEOMETRY_SIZE,
+} from '../constants'
 
 import vert from '../glsl/ocean.vert'
 import frag from '../glsl/ocean.frag'
-
-const GEOMETRY_RESOLUTION = 256 / 2
-const GEOMETRY_SIZE = 80 * 2
 
 const positionData = []
 const coordinateData = []
